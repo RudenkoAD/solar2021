@@ -4,6 +4,18 @@
 from solar_objects import Star, Planet
 from solar_vis import DrawableObject
 
+def from_notation(char):
+    if len(char.split('e')) == 2:
+        return int(char.split('e')[0]) * 10**int(char.split('e')[1])
+    else:
+        return int(char)
+
+def to_notation(char):
+    if char == 0:
+        return char
+    else:
+        return str(char/(10**(len(str(char))-1))) + 'E' + str(len(str(char))-1)
+
 def read_space_objects_data_from_file(input_filename):
     """Cчитывает данные о космических объектах из файла, создаёт сами объекты
     и вызывает создание их графических образов
@@ -53,14 +65,14 @@ def parse_object_parameters(line, obj):
 
     **star** — объект звезды.
     """
-    line = line.split().lower()
+    line = line.lower().split()
     obj.R = int(line[1])
     obj.color = line[2]
-    obj.m = int(line[3])
-    obj.x = int(line[4])
-    obj.y = int(line[5])
-    obj.Vx = int(line[6])
-    obj.Vy = int(line[7])
+    obj.m = from_notation(line[3])
+    obj.x = from_notation(line[4])
+    obj.y = from_notation(line[5])
+    obj.Vx = from_notation(line[6])
+    obj.Vy = from_notation(line[7])
     return obj
 
 
@@ -81,9 +93,12 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     """
     with open(output_filename, 'w') as out_file:
         for obj in space_objects:
-            print(out_file, "%s %d %s %f" % ('1', 2, '3', 4.5))
-            # FIXME!
+            print("%s %d %s %s %s %s %s %s" % (
+                obj.type, obj.R, obj.color,
+                to_notation(obj.m), to_notation(obj.x), to_notation(obj.y),
+                to_notation(obj.Vx), to_notation(obj.Vy)), file = out_file)
 
 
 if __name__ == "__main__":
-    print("This module is not for direct call!")
+    objects = read_space_objects_data_from_file('double_star.txt')
+    write_space_objects_data_to_file('test.txt', [A.obj for A in objects])
