@@ -71,13 +71,23 @@ class Drawer:
 
 
     def update(self, figures, ui):
+
         self.screen.fill((0, 0, 0))
         for figure in figures:
             figure.draw(self.screen)
-        
-        ui.blit()
+
+        ui.blit(self.screen)
         ui.update()
         pg.display.update()
+
+
+        '''self.screen.fill((0, 0, 0))
+        for figure in figures:
+            figure.draw()
+        
+        ui.blit(self.screen)
+        ui.update()
+        pg.display.update()'''
 
 
 class DrawableObject:

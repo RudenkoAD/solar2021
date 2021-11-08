@@ -55,6 +55,7 @@ def parse_star_parameters(line, star):
     """
     pass  # FIXME: допишите парсер
 
+
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.
     Входная строка должна иметь слеюущий формат:
