@@ -39,7 +39,6 @@ def execution(delta):
     recalculate_space_objects_positions([dr.obj for dr in space_objects], delta)
     model_time += delta
 
-
 def start_execution():
     """Обработчик события нажатия на кнопку Start.
     Запускает циклическое исполнение функции execution.
