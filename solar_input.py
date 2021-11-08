@@ -6,9 +6,9 @@ from solar_vis import DrawableObject
 
 def from_notation(char):
     if len(char.split('e')) == 2:
-        return int(char.split('e')[0]) * 10**int(char.split('e')[1])
+        return float(char.split('e')[0]) * 10**float(char.split('e')[1])
     else:
-        return int(char)
+        return float(char)
 
 def to_notation(char):
     if char == 0:
@@ -100,5 +100,5 @@ def write_space_objects_data_to_file(output_filename, space_objects):
 
 
 if __name__ == "__main__":
-    objects = read_space_objects_data_from_file('double_star.txt')
+    objects = read_space_objects_data_from_file('solar_system.txt')
     write_space_objects_data_to_file('test.txt', [A.obj for A in objects])
