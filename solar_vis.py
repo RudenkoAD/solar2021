@@ -77,6 +77,7 @@ class Drawer:
         ui.update()
         pg.display.update()
 
+        
 
 class DrawableObject:
     def __init__(self, obj):
