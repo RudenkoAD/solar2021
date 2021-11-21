@@ -28,7 +28,7 @@ scale_factor = 1
 def calculate_scale_factor(max_distance):
     """Вычисляет значение глобальной переменной **scale_factor** по данной характерной длине"""
     global scale_factor
-    scale_factor = 0.5*min(window_height, window_width)/max_distance
+    scale_factor = 0.5 * min(window_height, window_width) / max_distance
     print('Scale factor:', scale_factor)
 
 
@@ -43,7 +43,7 @@ def scale_x(x):
     **x** — x-координата модели.
     """
 
-    return int(x*scale_factor) + window_width//2
+    return int(x * scale_factor) + window_width // 2
 
 
 def scale_y(y):
@@ -57,8 +57,7 @@ def scale_y(y):
 
     **y** — y-координата модели.
     """
-    return -int(y*scale_factor) + window_height//2
-
+    return -int(y * scale_factor) + window_height // 2
 
 
 if __name__ == "__main__":
@@ -69,9 +68,7 @@ class Drawer:
     def __init__(self, screen):
         self.screen = screen
 
-
     def update(self, figures, ui):
-
         self.screen.fill((255, 255, 255))
         for figure in figures:
             figure.draw(self.screen)
@@ -85,5 +82,24 @@ class DrawableObject:
     def __init__(self, obj):
         self.obj = obj
 
+        self.obj.coordinates = {'x': list(), 'y': list()}
+
     def draw(self, surface):
-        pg.draw.circle(surface, self.obj.color, (scale_x(self.obj.x), scale_y(self.obj.y)), self.obj.R, 0)
+        # print(self.obj.__dict__)
+        # print(self.obj.coordinates)
+        # pg.draw.circle(surface, self.obj.color, (scale_x(self.obj.x), scale_y(self.obj.y)), self.obj.R, 0)
+
+        if len(self.obj.coordinates['x']) >= 100:
+            self.obj.coordinates['x'] = self.obj.coordinates['x'][1:]
+            self.obj.coordinates['y'] = self.obj.coordinates['y'][1:]
+
+        self.obj.coordinates['x'].append(self.obj.x)
+        self.obj.coordinates['y'].append(self.obj.y)
+
+        k = 0
+        for j in reversed(range(len(self.obj.coordinates['x']))):
+            pg.draw.circle(surface, self.obj.color,
+                           (scale_x(self.obj.coordinates['x'][j]),
+                            scale_y(self.obj.coordinates['y'][j])),
+                           self.obj.R + k)
+            k -= 0.1
