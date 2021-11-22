@@ -57,7 +57,7 @@ def stop_execution():
     global alive
     alive = False
 
-def open_file():
+def open_file_for_solar_system():
     """Открывает диалоговое окно выбора имени файла и вызывает
     функцию считывания параметров системы небесных тел из данного файла.
     Считанные объекты сохраняются в глобальный список space_objects
@@ -72,6 +72,35 @@ def open_file():
     max_distance = max([max(abs(obj.obj.x), abs(obj.obj.y)) for obj in space_objects])
     calculate_scale_factor(max_distance)
 
+def open_file_for_one_satellite():
+    """Открывает диалоговое окно выбора имени файла и вызывает
+    функцию считывания параметров вращения спутника из данного файла.
+    Считанные объекты сохраняются в глобальный список space_objects
+    """
+    global space_objects
+    global browser
+    global model_time
+
+    model_time = 0.0
+    in_filename = "one_satellite.txt"
+    space_objects = read_space_objects_data_from_file(in_filename)
+    max_distance = max([max(abs(obj.obj.x), abs(obj.obj.y)) for obj in space_objects])
+    calculate_scale_factor(max_distance)
+
+def open_file_for_double_star():
+    """Открывает диалоговое окно выбора имени файла и вызывает
+    функцию считывания параметров двойной звезды из данного файла.
+    Считанные объекты сохраняются в глобальный список space_objects
+    """
+    global space_objects
+    global browser
+    global model_time
+
+    model_time = 0.0
+    in_filename = "double_star.txt"
+    space_objects = read_space_objects_data_from_file(in_filename)
+    max_distance = max([max(abs(obj.obj.x), abs(obj.obj.y)) for obj in space_objects])
+    calculate_scale_factor(max_distance)
 def handle_events(events, menu):
     global alive
     for event in events:
@@ -95,14 +124,21 @@ def init_ui(screen):
     button_play = thorpy.make_button("Play", func=start_execution)
     timer = thorpy.OneLineText("Seconds passed")
 
-    button_load = thorpy.make_button(text="Load a file", func=open_file)
-
+    button_load_for_solar_system = thorpy.make_button(text="Load a solar system",
+                                                      func=open_file_for_solar_system)
+    button_load_for_one_satellite = thorpy.make_button(text="Load one satellite",
+                                                       func=open_file_for_one_satellite)
+    button_load_for_double_star = thorpy.make_button(text="Load double star",
+                                                     func=open_file_for_double_star)
+    
     box = thorpy.Box(elements=[
         slider,
         button_pause, 
         button_stop, 
         button_play, 
-        button_load,
+        button_load_for_solar_system,
+        button_load_for_one_satellite,
+        button_load_for_double_star,
         timer])
     reaction1 = thorpy.Reaction(reacts_to=thorpy.constants.THORPY_EVENT,
                                 reac_func=slider_reaction,
@@ -163,3 +199,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+pg.quit()
